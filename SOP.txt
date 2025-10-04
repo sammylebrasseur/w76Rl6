@@ -1,0 +1,28 @@
+1. DOWNLOAD PROSPECTS FROM CRM
+
+    a. Download prospects, whose mobiles you want to enrich, from your CRM. Ensure the following fields (with these exact strings as nomenclature) are present:
+        - contact_id (so you can easily reinsert into your CRM)
+        - first_name
+        - linkedin_url
+
+2. UPLOAD TO POSTGRES DB (We'll use Supabase)
+
+    a. If not already created, create an account at https://supabase.com/
+    b. If not already created, set up your organization and project
+    c. In the SQL editor, run this command to create the public.contacts table:
+    """
+        CREATE TABLE IF NOT EXISTS public.contacts (
+            id SERIAL PRIMARY KEY,
+            contact_id UNIQUE,
+            first_name TEXT,
+            linkedin_url TEXT,
+            enriched_partial TEXT,
+            enriched_full TEXT
+        );
+    """
+    d. In the SQL editor, run this command to add row level security:
+    """
+        alter table public.contacts enable row level security;
+    """
+
+
