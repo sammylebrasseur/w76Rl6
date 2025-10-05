@@ -3,10 +3,12 @@ import os
 from supabase.lib.client_options import ClientOptions
 import psycopg2
 from psycopg2.extras import RealDictCursor
-
-connection_string = 'postgresql://postgres.glyxdcmwlaufznnfxfan:Ca2024$al26@aws-0-us-east-1.pooler.supabase.com:5432/postgres'
-url: str = 'https://glyxdcmwlaufznnfxfan.supabase.co'
-key: str = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdseXhkY213bGF1ZnpubmZ4ZmFuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzQxNTU4NSwiZXhwIjoyMDY4OTkxNTg1fQ.b1H2gpg28kEJfV9r5_Xk2TZZqy3ezNMo0oQjpEcuSB0'
+import dotenv
+import os
+dotenv.load_dotenv()
+connection_string = os.getenv('SUPABASE_CONNECTION_STRING')
+url = os.getenv('SUPABASE_URL')
+key = os.getenv('SUPABASE_KEY')
 client_options = ClientOptions(postgrest_client_timeout=60)
 supabase: Client = create_client(url, key)
 
