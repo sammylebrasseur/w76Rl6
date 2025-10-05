@@ -1,6 +1,14 @@
 import tldextract
 import re
 
+def full_url(website_url=str):
+
+    if 'www.' not in website_url:
+        website_url = 'www.' + website_url
+    if 'https://' not in website_url and 'http://' not in website_url:
+        website_url = 'https://' + website_url
+    return website_url
+
 def url_clean(website_url=str):
     
     if not website_url:

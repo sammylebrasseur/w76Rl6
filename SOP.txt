@@ -1,8 +1,21 @@
+1. Set up project
+    a. Create a virtual environment by running in the terminal:
+    """
+    python3 -m venv .venv
+    """
+    b. Pip install requirements by running in the terminal:
+    """
+    pip install -r requirements.txt
+    """
+    c. Rename the "config_example.py" file to "config.py"
+
+
 1. DOWNLOAD PROSPECTS FROM CRM
 
     a. Download prospects, whose mobiles you want to enrich, from your CRM. Ensure the following fields (with these exact strings as nomenclature) are present:
         - contact_id (so you can easily reinsert into your CRM)
         - first_name
+        - last_name
         - linkedin_url
 
 2. UPLOAD TO POSTGRES DB (We'll use Supabase)
@@ -15,14 +28,71 @@
             id SERIAL PRIMARY KEY,
             contact_id UNIQUE,
             first_name TEXT,
+            last_name TEXT,
             linkedin_url TEXT,
-            enriched_partial TEXT,
-            enriched_full TEXT
+            enriched_partial JSONB,
+            enriched_full TEXT,
+            validated TEXT,
+            phone_status TEXT,
+            phone_type TEXT,
+            phone_carrier TEXT
         );
     """
     d. In the SQL editor, run this command to add row level security:
     """
         alter table public.contacts enable row level security;
     """
+    e. In the config.py file, set your:
+        - SUPABASE_CONNECTION_STRING 
+            1. Go to CONNECT
+            2. Copy the "session pooler" string
+            3. Replace [YOUR_PASSWORD] in the string with your database password you created at signup
+        - SUPABASE_URL 
+            1. Go PROJECT SETTINGS 
+            2. Go to DATA API 
+            3. Copy the url
+        - SUPABASE_KEY 
+            1. Go to PROJECT SETTINGS
+            2. Go to API KEYS
+            3. Copy the "service_role" secret
 
+3. Set up the "1_enrich_partial.py" script
+
+    a. Log in to https://saleshandy.com/ (Create account if not yet created)
+    b. Get search cookies and headers
+        1. Open dev tools
+        2. Make dummy search in UI
+        3. Copy the search XHR request as CURL
+        4. Paste into curlconverter.com
+        5. Grab the cookies and headers and place them into the config.py file
+
+4. Set up the "2_enrich_full.py" script
+
+    a. Log in to https://dataforseo.com/ (Create account if not yet created)
+    b. Go to "API Access" and copy your:
+        - API login
+        - API password
+    c. Paste them into the relevant config.py variables
+
+5. Set up the "3_validate.py" script
+
+    a. Log in to https://app.clearoutphone.io/ (Create account if not yet created)
+    b. Go to "API"
+    c. Copy your API token and insert into config.py
+
+6. Run the scripts sequentially.
+
+    1. "1_enrich_partial.py" script => Gets partial numbers for all prospects
+    2. "2_enrich_full.py" script => Gets full numbers for all prospects
+    3. "3_validate.py" script => Validates all numbers
+
+7. Download the enriched prospects and upload to your CRM
+
+    a. Log in to https://supabase.com/
+    b. In the SQL editor, run this command (if you have more than 10,000 contacts, you may want to select in chunks to avoid long response times and UI lag):
+    """
+    SELECT * FROM public.contacts
+    """
+    c. Click "Export" > "Download CSV"
+    d. Upload the CSV to your CRM
 
