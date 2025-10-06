@@ -1,4 +1,5 @@
 1. Set up project
+
     a. Create a virtual environment by running in the terminal:
     """
     python3 -m venv .venv
@@ -25,7 +26,7 @@
     """
         CREATE TABLE IF NOT EXISTS public.contacts (
             id SERIAL PRIMARY KEY,
-            contact_id UNIQUE,
+            contact_id TEXT,
             first_name TEXT,
             last_name TEXT,
             linkedin_url TEXT,
@@ -34,14 +35,16 @@
             validated TEXT,
             phone_status TEXT,
             phone_type TEXT,
-            phone_carrier TEXT
+            phone_carrier TEXT,
+            UNIQUE (contact_id)
         );
     """
     d. In the SQL editor, run this command to add row level security:
     """
         alter table public.contacts enable row level security;
     """
-    e. In the config.py file, set your:
+    e. Upload the CSV of contacts to the table
+    f. In the config.py file, set your:
         - SUPABASE_CONNECTION_STRING 
             1. Go to CONNECT
             2. Copy the "session pooler" string
