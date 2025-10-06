@@ -124,7 +124,6 @@ def dataforseo_call_requests(keyword: str,proxy_url, login, password):
     headers = {"Authorization": f"Basic {cred_b64}", "Content-Type": "application/json"}
     payload = [{"language_code": "en", "location_code": 2840, "keyword": f"{keyword}"}]
 
-    proxy_url = "http://wxlqgrzc:mfa8bm49obls@156.237.23.161:5562"
     proxies = {"http": proxy_url, "https": proxy_url}
     print('Requesting with proxies:', proxies)
     r = requests.post(url, headers=headers, json=payload, proxies=proxies, timeout=30)
