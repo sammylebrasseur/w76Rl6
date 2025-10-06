@@ -36,6 +36,8 @@
             phone_status TEXT,
             phone_type TEXT,
             phone_carrier TEXT,
+            phone TEXT,
+            phones TEXT,
             UNIQUE (contact_id)
         );
     """
